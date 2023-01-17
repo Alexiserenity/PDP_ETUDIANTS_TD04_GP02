@@ -20,16 +20,11 @@ void setup() {
   Serial.begin(9600);
   // Initialize device.
   dht.begin();
-  Serial.println(F("DHTxx Unified Sensor Example"));
+  //Serial.println(F("DHTxx Unified Sensor Example"));
   sensor_t sensor;
-}
-
-void loop() {
-  // Effectuer une mesure toutes les 5s
-  delay(5000);
 
   // Afficher l'humidité relative avec un peu de formatage
-sensors_event_t event;
+  sensors_event_t event;
   dht.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
     Serial.println(F("Error reading temperature!"));
@@ -50,4 +45,9 @@ sensors_event_t event;
     Serial.print(event.relative_humidity);
     Serial.println(F("%"));
   }
+
+  esp_sleep_enable_timer_wakeup(5e6);
+  esp_deep_sleep_start();
 }
+
+void loop(){}
